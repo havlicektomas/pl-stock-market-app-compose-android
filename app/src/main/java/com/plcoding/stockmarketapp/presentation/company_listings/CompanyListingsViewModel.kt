@@ -22,13 +22,19 @@ class CompanyListingsViewModel @Inject constructor(
 
     private var searchJob: Job? = null
 
+    init {
+        viewModelScope.launch {
+            getCompanyListings()
+        }
+    }
+
     fun onEvent(event: CompanyListingsEvent) {
         when (event) {
             is CompanyListingsEvent.Refresh -> {
                 getCompanyListings(fetchFromRemote = true)
             }
             is CompanyListingsEvent.OnSearchQueryChange -> {
-                state = state.copy(searchQuery = state.searchQuery)
+                state = state.copy(searchQuery = event.query)
                 searchJob?.cancel()
                 searchJob = viewModelScope.launch {
                     delay(500L)

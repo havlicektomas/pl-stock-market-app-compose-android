@@ -46,7 +46,7 @@ class StockRepositoryImpl @Inject constructor(
             }
 
             val remoteListings = try {
-                val response = api.getListings(query)
+                val response = api.getListings()
                 csvParser.parse(response.byteStream())
             } catch (e: IOException) {
                 e.printStackTrace()
